@@ -1,0 +1,7 @@
+.container-wrapper {
+	background-color: var(--primary-color);
+}
+
+.p-card-body {
+	width: 100%;
+}

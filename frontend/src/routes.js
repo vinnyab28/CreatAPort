@@ -9,15 +9,21 @@ import Profile from "./pages/Profile";
 import Projects from "./pages/Projects";
 import SignUp from "./pages/SignUp";
 import Skills from "./pages/Skills";
+import Templates from "./pages/Templates";
+import VerificationPage from "./pages/VerificationPage";
 
 const routes = createBrowserRouter([
 	{
-		path: "/",
+		path: "/login",
 		element: <Login />,
 	},
 	{
 		path: "/signup",
 		element: <SignUp />,
+	},
+	{
+		path: "/verification",
+		element: <VerificationPage />,
 	},
 	{
 		path: "/",
@@ -50,6 +56,10 @@ const routes = createBrowserRouter([
 			{
 				path: "/code",
 				element: <Code />,
+			},
+			{
+				path: "/templates",
+				element: <Templates />,
 			},
 		],
 	},

@@ -41,19 +41,19 @@ const Projects = () => {
                             <h2>Project #{index + 1}</h2>
                             <Button severity="danger" icon="pi pi-trash" onClick={() => onRemoveProject(index)} />
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 mb-3">
                             <label htmlFor={`projects.${index}.title`}>Title</label>
                             <InputText id={`projects.${index}.title`} placeholder="Project Title" required={true} {...register(`projects.${index}.title`)} />
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 mb-3">
                             <label htmlFor={`projects.${index}.description`}>Description</label>
                             <InputText id={`projects.${index}.description`} placeholder="Project Description" required={true} {...register(`projects.${index}.description`)} />
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 mb-3">
                             <label htmlFor={`projects.${index}.sourceCodeLink`}>Source Code Link</label>
                             <InputText id={`projects.${index}.sourceCodeLink`} placeholder="Source Code Link" required={true} {...register(`projects.${index}.sourceCodeLink`)} />
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 mb-3">
                             <label htmlFor={`projects.${index}.previewLink`}>Preview Link</label>
                             <InputText id={`projects.${index}.previewLink`} placeholder="Preview Link" required={true} {...register(`projects.${index}.previewLink`)} />
                         </div>
