@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 const { DynamoDBClient, ResourceNotFoundException } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
 const { generateAccessJWT } = require("./utils");
@@ -8,8 +9,14 @@ const { generateAccessJWT } = require("./utils");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+// CORS configuration
+const corsOptions = {
+	origin: "http://localhost:3000", // Replace with your frontend URL
+	credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+app.use(cors(corsOptions));
 
-const PORT = 3000;
+const PORT = 3001;
 
 const client = new DynamoDBClient({
 	accessKeyId: "ASIA3N4ZS5ZSSFPS7USS",
@@ -57,6 +64,10 @@ app.post("/login", async (req, res) => {
 			});
 		}
 
+		if (!user.isVerified) {
+			return res.status(403).json({ message: "Please verify your account to login." });
+		}
+
 		let options = {
 			maxAge: 20 * 60 * 1000,
 			httpOnly: true,
@@ -69,6 +80,9 @@ app.post("/login", async (req, res) => {
 		res.status(200).json({
 			status: "success",
 			message: "You have successfully logged in.",
+			body: {
+				token,
+			},
 		});
 	} catch (err) {
 		console.error(err);
