@@ -63,11 +63,11 @@ const Experience = () => {
                         <div className="flex gap-4 mb-3">
                             <div className="flex-grow">
                                 <label htmlFor={`education.${index}.startYear`} className="block">Start Year</label>
-                                <Calendar id={`education.${index}.startYear`} placeholder="Start Year" required={true} {...register(`experience.${index}.startYear`)} yearRange="2000:2030" />
+                                <Calendar id={`education.${index}.startYear`} placeholder="Start Year" required={true} {...register(`experience.${index}.startYear`)} yearRange="2000:2030" view="year" dateFormat="yy" />
                             </div>
                             <div className="flex-grow">
                                 <label htmlFor={`experience.${index}.endYear`} className="block">End Year</label>
-                                <Calendar id={`experience.${index}.endYear`} placeholder="End Year" required={true} {...register(`experience.${index}.endYear`)} yearRange="2000:2030" />
+                                <Calendar id={`experience.${index}.endYear`} placeholder="End Year" required={true} {...register(`experience.${index}.endYear`)} yearRange="2000:2030" view="year" dateFormat="yy" />
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 mb-3">

@@ -5,7 +5,7 @@ export const educationSlice = createSlice({
 	initialState: [],
 	reducers: {
 		addEducation: (state, action) => {
-			return [...action.payload];
+			return [...state, ...action.payload];
 		},
 	},
 });

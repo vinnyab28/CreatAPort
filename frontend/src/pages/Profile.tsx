@@ -22,13 +22,11 @@ const Profile = () => {
     });
 
     const onSubmit = (data: any) => {
-        console.log(formState);
+
         if (formState.isValid) {
             setIsSubmitting(true);
-            setTimeout(() => {
-                setIsSubmitting(false);
-                dispatch(updateProfile(data));
-            }, 4000)
+            dispatch(updateProfile(data));
+            setIsSubmitting(false);
         }
     }
 

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
+import AuthProvider from './hooks/AuthProvider';
+import { ToastProvider } from './hooks/ToastContext';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
@@ -11,8 +13,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-        <Provider store={store}>
-    <App />
+    <Provider store={store}>
+      <ToastProvider><AuthProvider><App /></AuthProvider></ToastProvider>
     </Provider>
   </React.StrictMode>
 );
