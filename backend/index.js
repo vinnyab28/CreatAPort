@@ -1,9 +1,12 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const { DynamoDBClient, ResourceNotFoundException } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 const { generateAccessJWT } = require("./utils");
 
 const app = express();
@@ -16,7 +19,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const PORT = 3001;
+const PORT = process.env.PORT || 8000;
 
 const client = new DynamoDBClient({
 	accessKeyId: "ASIA3N4ZS5ZSSFPS7USS",
@@ -32,6 +35,27 @@ const getUserByEmail = async (email) => {
 		FilterExpression: "email = :email",
 		ExpressionAttributeValues: {
 			":email": email,
+		},
+		Limit: 1,
+	};
+	try {
+		const data = await docClient.send(new ScanCommand(params));
+		return data.Items.length > 0 ? data.Items[0] : null;
+	} catch (error) {
+		if (error instanceof ResourceNotFoundException) {
+			console.error("Resource not found!");
+		}
+		console.error(error);
+		return null;
+	}
+};
+
+const getUserByUserID = async (userID) => {
+	const params = {
+		TableName: "Users",
+		FilterExpression: "userID = :userID",
+		ExpressionAttributeValues: {
+			":userID": userID,
 		},
 		Limit: 1,
 	};
@@ -64,9 +88,9 @@ app.post("/login", async (req, res) => {
 			});
 		}
 
-		if (!user.isVerified) {
-			return res.status(403).json({ message: "Please verify your account to login." });
-		}
+		// if (!user.isVerified) {
+		// 	return res.status(403).json({ message: "Please verify your account to login." });
+		// }
 
 		let options = {
 			maxAge: 20 * 60 * 1000,
@@ -74,8 +98,8 @@ app.post("/login", async (req, res) => {
 			secure: true,
 			sameSite: "None",
 		};
-
-		const token = generateAccessJWT();
+		const tokenPayload = { email: user.email, userID: user.userID, name: user.name };
+		const token = generateAccessJWT(tokenPayload);
 		res.cookie("SessionID", token, options);
 		res.status(200).json({
 			status: "success",
@@ -84,6 +108,62 @@ app.post("/login", async (req, res) => {
 				token,
 			},
 		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({
+			message: "Internal Server Error",
+		});
+	}
+});
+
+app.post("/save", async (req, res) => {
+	const { userID, data } = req.body;
+	if (!userID) {
+		return res.status(403).json({ message: "Invalid request!" });
+	}
+
+	const user = await getUserByUserID(userID);
+	if (!user) {
+		return res.status(404).json({ message: "User not found!" });
+	}
+	const params = {
+		TableName: "Users",
+		Key: {
+			userID: userID,
+			email: user.email,
+		},
+		UpdateExpression: "set #data = :data",
+		ExpressionAttributeNames: {
+			"#data": "data", // Use a placeholder for the attribute name
+		},
+		ExpressionAttributeValues: {
+			":data": { ...data }, // The new data to be set
+		},
+		ReturnValues: "UPDATED_NEW", // Return the updated attributes
+	};
+
+	try {
+		const result = await docClient.send(new UpdateCommand(params));
+		res.status(200).json({ message: "Data updated successfully!", body: result.Attributes });
+	} catch (error) {
+		console.error("Error updating data:", error);
+		res.status(500).json({ error: "Could not update data" });
+	}
+});
+
+app.get("/data", async (req, res) => {
+	try {
+		const userID = req.query.userID;
+		if (!userID) {
+			return res.status(403).json({ message: "Invalid request!" });
+		}
+
+		const user = await getUserByUserID(userID);
+		if (!user) {
+			return res.status(404).json({ message: "User not found!" });
+		}
+
+		return res.status(200).json({ body: user.data });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({
