@@ -24,8 +24,8 @@ const PORT = process.env.PORT || 8000;
 const client = new DynamoDBClient({
 	accessKeyId: "ASIA3N4ZS5ZSSFPS7USS",
 	secretAccessKey: "ac9u6R9GUsLczuxc01Apdiot/ioj9hSnw6aAwvIt",
-	region: "us-east-2", // You can set any region
-	endpoint: "http://localhost:8000", // Local DynamoDB endpoint
+	region: "us-east-1", // You can set any region
+	// endpoint: "http://localhost:8000", // Local DynamoDB endpoint
 });
 const docClient = DynamoDBDocumentClient.from(client);
 
