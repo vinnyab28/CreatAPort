@@ -105,26 +105,28 @@ exports.handler = async (event) => {
 	const compiledTemplate = Handlebars.compile(template);
 
 	const data = JSON.stringify(event, null, 2);
+	const { userID, body } = JSON.parse(data);
 	// Render the HTML
-	const renderedHtml = compiledTemplate(data);
+	const renderedHtml = compiledTemplate(body);
 
 	// Define S3 bucket and object key
-	const bucketName = "your-s3-bucket-name"; // Replace with your S3 bucket name
-	const objectKey = "rendered_output.html";
+	const bucketName = "cloud-computing-ta"; // Replace with your S3 bucket name
+	const objectKey = "portfolio.html";
 
 	// Upload the rendered HTML to S3
 	const params = {
 		Bucket: bucketName,
-		Key: objectKey,
+		Key: `${userID}/${objectKey}`,
 		Body: renderedHtml,
 		ContentType: "text/html",
 	};
 
 	try {
 		await s3.putObject(params).promise();
+		const objectUrl = `https://${bucketName}.s3.us-east-1.amazonaws.com/${params.Key}`;
 		return {
 			statusCode: 200,
-			body: JSON.stringify("HTML rendered and uploaded to S3 successfully!"),
+			body: JSON.stringify({ message: "HTML rendered and uploaded to S3 successfully!", url: objectUrl }),
 		};
 	} catch (error) {
 		console.error("Error uploading to S3:", error);
