@@ -25,7 +25,7 @@ const client = new DynamoDBClient({
 	accessKeyId: "ASIA3N4ZS5ZSSFPS7USS",
 	secretAccessKey: "ac9u6R9GUsLczuxc01Apdiot/ioj9hSnw6aAwvIt",
 	region: "us-east-1", // You can set any region
-	// endpoint: "http://localhost:8000", // Local DynamoDB endpoint
+	endpoint: "http://localhost:8000", // Local DynamoDB endpoint
 });
 const docClient = DynamoDBDocumentClient.from(client);
 

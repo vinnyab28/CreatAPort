@@ -119,6 +119,7 @@ exports.handler = async (event) => {
 		Key: `${userID}/${objectKey}`,
 		Body: renderedHtml,
 		ContentType: "text/html",
+		ACL: "public-read",
 	};
 
 	try {
@@ -132,7 +133,7 @@ exports.handler = async (event) => {
 		console.error("Error uploading to S3:", error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify("Error uploading to S3"),
+			body: JSON.stringify({ message: "Error uploading to S3" }),
 		};
 	}
 };

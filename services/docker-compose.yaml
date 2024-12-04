@@ -1,0 +1,30 @@
+services:
+  login:
+    build:
+      context: ./Login
+      dockerfile: Dockerfile
+    image: dalhousie/term-assignment:login
+
+  signup:
+    build:
+      context: ./Signup
+      dockerfile: Dockerfile
+    image: dalhousie/term-assignment:signup
+
+  generator:
+      build:
+        context: ./Generator
+        dockerfile: Dockerfile
+      image: dalhousie/term-assignment:generator
+
+  save:
+    build:
+      context: ./Save
+      dockerfile: Dockerfile
+    image: dalhousie/term-assignment:save
+
+  data:
+    build:
+      context: ./FetchData
+      dockerfile: Dockerfile
+    image: dalhousie/term-assignment:fetchData

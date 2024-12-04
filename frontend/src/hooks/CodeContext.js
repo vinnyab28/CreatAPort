@@ -7,17 +7,21 @@ const CodeContext = createContext();
 
 export const CodeProvider = ({ children }) => {
 	const { showErrorToast, showSuccessToast } = useToast();
-	const generateCode = ({ userID, portfolioJSON }) => {
+	const generateCode = (data) => {
 		return axios
 			.post(
-				"https://32mxwewldj.execute-api.us-east-1.amazonaws.com/test/generate",
-				{ userID, ...portfolioJSON },
+				"https://7ky1rrzsv2.execute-api.us-east-1.amazonaws.com/dev/generate",
+				data,
 			)
 			.then((res) => {
-				showSuccessToast(res.data.message);
+				showSuccessToast(res.body?.message);
+				const objectUrl = res.body?.url;
+				if (objectUrl) {
+					window.open(objectUrl, "_blank");
+				}
 			})
 			.catch((err) => {
-				showErrorToast(err.message);
+				showErrorToast(err.body?.message);
 			});
 	};
 

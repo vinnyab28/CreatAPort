@@ -5,14 +5,23 @@ import { Password } from "primereact/password";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useToast } from "../hooks/ToastContext";
+import { _postGateway } from "../services/resolve";
 import "../styles/login.css";
 
 const SignUp = () => {
+    const { showSuccessToast, showErrorToast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, control, handleSubmit, formState, getValues } = useForm();
 
-    const onSubmit = () => {
-
+    const onSubmit = (values) => {
+        setIsSubmitting(true);
+        _postGateway("signup", values).then((res) => {
+            setIsSubmitting(false);
+            showSuccessToast("User created successfully!");
+        }).catch(err => {
+            showErrorToast(err.message);
+        }).finally(() => setIsSubmitting(false));
     }
     return (<>
         <div className="container-wrapper h-full">
