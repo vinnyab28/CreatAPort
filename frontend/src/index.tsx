@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import AuthProvider from './hooks/AuthProvider';
+import CodeProvider from './hooks/CodeContext';
 import { ToastProvider } from './hooks/ToastContext';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -14,7 +15,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastProvider><AuthProvider><App /></AuthProvider></ToastProvider>
+      <ToastProvider><AuthProvider><CodeProvider><App /></CodeProvider></AuthProvider></ToastProvider>
     </Provider>
   </React.StrictMode>
 );

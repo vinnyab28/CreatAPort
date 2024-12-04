@@ -2,6 +2,7 @@ import { Button } from 'primereact/button';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import { addSkills } from '../store/SkillsSlice';
 
 const Skills = () => {
@@ -23,7 +24,7 @@ const Skills = () => {
                 {/* <Chips id="skills" required={true} {...register("skills")} /> */}
             </div>
             <hr />
-            <Button type="submit">Save</Button>
+            <Link to="/education"><Button type="submit" label='Save & Next'></Button></Link>
         </form>
     </>)
 }

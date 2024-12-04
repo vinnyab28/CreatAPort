@@ -14,7 +14,8 @@ import Templates from "./pages/Templates";
 import VerificationPage from "./pages/VerificationPage";
 
 function App() {
-  return (
+
+  return (<>
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -41,6 +42,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+  </>
   );
 }
 

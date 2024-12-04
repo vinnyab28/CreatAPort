@@ -4,9 +4,11 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addExperience } from "../store/ExperienceSlice";
 
 const Experience = () => {
+    const navigate = useNavigate();
     const experience = useSelector((state: any) => state.experience);
     const dispatch = useDispatch();
 
@@ -21,6 +23,7 @@ const Experience = () => {
 
     const onSubmit = (data: any) => {
         dispatch(addExperience(data.experience));
+        navigate("/projects");
     };
 
     const onAddExperience = () => {
@@ -78,8 +81,7 @@ const Experience = () => {
                 ))}
                 <Button type="button" icon="pi pi-plus" size="small" onClick={onAddExperience} label="Add Experience" />
                 <hr />
-                <Button type="submit">Save</Button>
-
+                <Button type="submit" label='Save & Next'></Button>
             </form>
         </>
     );

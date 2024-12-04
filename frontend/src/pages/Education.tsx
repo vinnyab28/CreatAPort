@@ -3,9 +3,11 @@ import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addEducation } from "../store/EducationSlice";
 
 const Education = () => {
+    const navigate = useNavigate();
     const education = useSelector((state: any) => state.education);
     const dispatch = useDispatch();
 
@@ -20,6 +22,7 @@ const Education = () => {
 
     const onSubmit = (data: any) => {
         dispatch(addEducation(data.education));
+        navigate("/experiences");
     };
 
     const onAddEducation = () => {
@@ -77,8 +80,7 @@ const Education = () => {
                 ))}
                 <Button type="button" icon="pi pi-plus" size="small" onClick={onAddEducation} label="Add Education" />
                 <hr />
-                <Button type="submit">Save</Button>
-
+                <Button type="submit" label='Save & Next'></Button>
             </form>
         </>
     );

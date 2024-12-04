@@ -2,9 +2,11 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addProject } from "../store/ProjectsSlice";
 
 const Projects = () => {
+    const navigate = useNavigate();
     const projects = useSelector((state: any) => state.projects);
     const dispatch = useDispatch();
 
@@ -19,6 +21,7 @@ const Projects = () => {
 
     const onSubmit = (data: any) => {
         dispatch(addProject(data.projects));
+        navigate("/certifications");
     };
 
     const onAddProject = () => {

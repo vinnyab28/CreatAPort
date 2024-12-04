@@ -1,18 +1,23 @@
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthProvider";
+import { _get } from "../services/resolve";
 import { updateProfile } from "../store/ProfileSlice";
 
 const Profile = () => {
+    const navigate = useNavigate();
+    const { userID } = useAuth();
     const profile = useSelector((state: any) => state.profile);
     const dispatch = useDispatch();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { register, handleSubmit, control, formState, getFieldState } = useForm({
+    const { handleSubmit, control, formState, reset } = useForm({
         defaultValues: profile
     });
 
@@ -22,11 +27,12 @@ const Profile = () => {
     });
 
     const onSubmit = (data: any) => {
-
+        console.log(data);
         if (formState.isValid) {
             setIsSubmitting(true);
             dispatch(updateProfile(data));
             setIsSubmitting(false);
+            navigate("/skills");
         }
     }
 
@@ -37,6 +43,16 @@ const Profile = () => {
     const onRemoveLink = (index: number) => {
         remove(index)
     }
+
+    useEffect(() => {
+        _get("data?userID=" + userID).then((res: any) => {
+            const profileData = res?.data?.body.profile
+            if (profileData) {
+                reset(profileData);
+                dispatch(updateProfile(profileData));
+            }
+        })
+    }, [userID, reset, dispatch])
 
     return (
         <>
@@ -122,7 +138,7 @@ const Profile = () => {
                     }
                 </div>
                 <div className="form-footer text-end">
-                    <Button type="submit" label="Save" disabled={!formState.isValid} loading={isSubmitting} />
+                    <Button type="submit" label="Save & Next" disabled={!formState.isValid} loading={isSubmitting} />
                 </div>
             </form>
         </>

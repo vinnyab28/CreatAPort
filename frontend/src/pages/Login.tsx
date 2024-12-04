@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
@@ -9,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 import { useToast } from "../hooks/ToastContext";
+import { _post } from "../services/resolve";
 import "../styles/login.css";
 
 const Login = () => {
@@ -23,7 +23,7 @@ const Login = () => {
         setIsSubmitting(true);
         const { email, password } = values;
         const body = { email, password }
-        axios.post("http://localhost:3001/login", body, { withCredentials: true }).then(res => {
+        _post("login", body, { withCredentials: true }).then(res => {
             showSuccessToast(res.data.message);
             login(res.data.body.token);
             navigate("/profile");
