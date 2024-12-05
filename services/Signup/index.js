@@ -4,8 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
-	const input = JSON.stringify(event, null, 2);
-	const { name, email, password } = JSON.parse(input);
+	const { name, email, password } = JSON.parse(event.body);
 	const isVerified = false;
 	try {
 		const hashedPassword = await bcrypt.hash(password, 12);
